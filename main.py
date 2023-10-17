@@ -12,6 +12,7 @@ components are to be implemented
 
 """
 
+"""
 import cv2 # sudo apt install libgl1 is required
 import numpy as np
 
@@ -23,3 +24,9 @@ np_img = np.array(img)
 
 # Print the shape of the numpy array
 print(np_img.shape)
+"""
+
+from PIL import Image
+with Image.open("contrast.jpg") as im:
+    im.convert("L")
+    im.show()
