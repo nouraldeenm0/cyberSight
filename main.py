@@ -3,16 +3,19 @@ import numpy as np
 import cv2
 
 def split(img: np.ndarray, threshold: int) -> List[np.ndarray]:
-    max_val = img.max()
-    min_val = img.min()
+    max_val: int = img.max()
+    min_val: int = img.min()
 
     # Base case: if image is homogeneous, return it wrapped in a list
     if max_val - min_val < threshold:
         return [img]
 
     # Recursive case: split image into four quadrants and recurse
-    mid_row, mid_col = img.shape[0] // 2, img.shape[1] // 2
-    quadrants = [img[:mid_row, :mid_col], img[:mid_row, mid_col:], img[mid_row:, :mid_col], img[mid_row:, mid_col:]]
+    img_dimensions: tuple = img.shape # returns a tuple of (height, width)
+    w_midpnt: int = img_dimensions[1] // 2
+    h_midpnt: int = img_dimensions[0] // 2
+
+    quadrants = [img[:w_midpnt, :h_midpnt], img[:w_midpnt, h_midpnt:], img[w_midpnt:, :h_midpnt], img[w_midpnt:, h_midpnt:]]
     return [quad for quadrant in quadrants for quad in split(quadrant, threshold)]
 
 def merge(segments: List[np.ndarray], threshold: int) -> List[np.ndarray]:
